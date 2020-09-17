@@ -5,7 +5,7 @@
       <h1>Rock Paper Scissors Lizard Spock</h1>
     </div>:
     <div class="player-container" id="player">
-      <h2>You - <span id="playerSc">{{textContent4}}</span> <span class="choice" :id="playerChoice">--- {{textContent}}</span></h2>
+      <h2>You - <span id="playerSc">{{textContent4}}</span> <span class="choice" :id="playerChoice"> {{textContent}}</span></h2>
       <font-awesome-icon :class="[textContent=='rock' ? 'active' : '', 'far']" icon="hand-rock" title="Rock" :id="playerRock" @click="select('rock')"/>
       <font-awesome-icon :class="[textContent=='paper' ? 'active' : '', 'far']" icon="hand-paper" title="Paper" :id="playerPaper" @click="select('paper')"/>
       <font-awesome-icon :class="[textContent=='scissors' ? 'active' : '', 'far']" icon="hand-scissors" title="Scissors" :id="playerScissors" @click="select('scissors')"/>
@@ -15,7 +15,7 @@
 
 
     <div class="player-container" id="computer">
-      <h2>computer - <span id="computerSc">{{textContent5}}</span> <span class="choice" :id="computerChoice"> --- {{textContent2}}</span></h2>
+      <h2>computer - <span id="computerSc">{{textContent5}}</span> <span class="choice" :id="computerChoice">{{textContent2}}</span></h2>
       <font-awesome-icon :class="[textContent2=='rock' ? 'active' : '', 'far']"  icon="hand-rock" title="Rock" id="computerRock"/>
       <font-awesome-icon :class="[textContent2=='paper' ? 'active' : '', 'far']"  icon="hand-paper" title="Paper" id="computerPaper"/>
       <font-awesome-icon :class="[textContent2=='scissors' ? 'active' : '', 'far']" icon="hand-scissors" title="Scissors" id="computerScissors"/>
@@ -23,7 +23,7 @@
       <font-awesome-icon :class="[textContent2=='spock' ? 'active' : '', 'far']" icon="hand-spock" title="Spock" id="computerSpock"/>
     </div>
 
-    <font-awesome-icon icon="sync" title="Sync"/>
+    <font-awesome-icon icon="sync" title="Sync" @click="resetAll"/>
     <div class="result-container">
       <h3 class="result-text" id="resultText">{{textContent3}}!</h3>
     </div>
@@ -33,8 +33,6 @@
 </template>
 
 <script>
-
-
 export default {
   name: "App",
   data(){
@@ -64,6 +62,7 @@ export default {
   
   },
   methods:{
+    
 
   select(playerChoice){
   this.textContent = playerChoice
@@ -91,17 +90,30 @@ this.textContent2 = this.computerChoice
 },
 
 updateScore(playerChoice){
-console.log(playerChoice, this.computerChoice)
 if (playerChoice === this.computerChoice){
   this.textContent3 = "It's a tie."
 }
 else{
  let choice = this.choices[playerChoice]
- console.log(choice.defeats.indexOf(this.computerChoice))
  if(choice.defeats.indexOf(this.computerChoice) > -1){
   this.textContent3= "You Won!!"
   this.playerScoreNumber++
   this.textContent4 = this.playerScoreNumber
+  this.$confetti.start({
+  particles: [
+    {
+      type: 'heart',
+    }
+  ],
+  defaultColors: [
+    'red',
+    'pink',
+    '#ba0000',
+  ],
+})
+  setTimeout(()=>{
+    this.$confetti.stop();
+  }, 4000)
  }
  else{
    this.textContent3= "You Lost!!"
@@ -114,7 +126,16 @@ else{
 checkResult(playerChoice){
   this.computerRandomeChoice();
   this.updateScore(playerChoice)
-}
+},
+
+resetAll(){
+  this.textContent4 = 0
+  this.textContent5 = 0
+  this.playerScoreNumber = 0
+  this.computerScoreNumber = 0
+  this.textContent=""
+  this.textContent2=""
+},
 
   }
 };

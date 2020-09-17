@@ -6,6 +6,10 @@ Vue.config.productionTip = false;
 
 
 
+import VueConfetti from 'vue-confetti'
+ 
+Vue.use(VueConfetti)
+
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { faUserSecret , faHandRock, faHandPaper, faHandScissors, faHandLizard, faHandSpock, faSync} from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
